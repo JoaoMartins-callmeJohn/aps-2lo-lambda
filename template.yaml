@@ -1,0 +1,28 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+
+Description: Stack to generate 2 legged token
+Resources:
+  ZendeskADNLambda:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: handler.lambda_handler
+      Runtime: python3.12
+      CodeUri: ./lambda
+      Description: Lambda function to retrieve a two legged token with limited scopes
+      MemorySize: 128
+      Timeout: 10
+      Environment:
+        Variables:
+          APS_CLIENT_ID: ""
+          APS_CLIENT_SECRET: ""
+          APS_SCOPES: ""
+      FunctionUrlConfig:
+        AuthType: NONE
+#output the lambda function public URL
+Outputs:
+  LambdaFunction:
+    Description: Lambda Function ARN
+    Value: !GetAtt ZendeskADNLambda.Arn
+    Export:
+      Name: ZendeskADNLambda
